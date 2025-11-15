@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciador IndexedDB</title>
+  <style>
+    :root {
+      --bg-color: #333;
+      --primary-color: #3b955d;
+      --danger-color: #e74c3c;
+      --text-color: #2c3e50;
+      --border-color: #666;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+    }
+
+    .container {
+      background: rgb(111, 110, 110);
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      color: var(--border-color);
+    }
+
+    input {
+      background: #333;
+      color: aliceblue;
+
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    button {
+      flex: 1 1 calc(33.33% - 10px);
+      padding: 10px;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #0f6dad;
+    }
+
+    .danger {
+      background-color: var(--danger-color);
+    }
+
+    .danger:hover {
+      background-color: #c0392b;
+    }
+
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    table {
+      border: 1px solid rgb(0, 255, 26);
+      color: rgb(0, 0, 0);
+      width: 75%;
+      text-align: center;
+      background-color: #ffffff;
+    }
+
+    tr,
+    td,
+    th {
+      padding: 2vw;
+      border: 1px solid rgb(0, 255, 26);
+       
+    }
+
+    #ml {
+      color: aliceblue;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <input type="number" id="inputValor" placeholder="Digite um valor...">
+
+    <div class="button-group">
+      <button onclick="calcular()">Calcular ML</button>
+      <button onclick="criar()">Salvar</button>
+
+
+    </div>
+
+    <hr>
+    <h2 id="ml"></h2>
+    <hr>
+
+    <center>
+      <div class="output" id="tabela"></div>
+    </center>
+  </div>
+
+
+
+
+  <script>
+
+    var inputValor = document.getElementById('inputValor')
+    var ml = document.getElementById('ml')
+
+
+    function calcular(){
+      var hora = new Date().getHours()
+      var NPH = 0
+      if(hora >4 && hora <12){
+        NPH=25
+      }
+      else if(hora>17&& hora <=23){
+        NPH=20
+      }
+      
+      ml.innerHTML = 'Regular: ' +calcularML() + 'ml<br>NPH: '+NPH+'ml';
+
+    }
+
+    function calcularML() {
+      var b = parseInt(inputValor.value)
+      if (b >= 80 && b <= 130) {
+        return 6;
+      }
+      if (b >= 131 && b <= 170) {
+        return 7;
+      }
+      if (b >= 171 && b <= 210) {
+        return 8;
+      }
+      if (b >= 211 && b <= 250) {
+        return 9;
+      }
+      if (b >= 251 && b <= 290) {
+        return 10;
+      }
+      if (b >= 291 && b <= 320) {
+        return 11;
+      }
+      if (b >= 321) {
+        return 12;
+      }
+      return 0;
+    }
+
+    function criar() {
+
+      var dia = new Date().getDate()
+      var mes = new Date().getMonth() + 1
+      var ano = new Date().getFullYear()
+      var hora = new Date().getHours()
+      var minutos = new Date().getMinutes()
+
+      var dose = calcularML();
+
+      console.log(dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
+
+
+      if (!localStorage.getItem('diabetes')) {
+
+        localStorage.setItem('diabetes', dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
+
+
+      } else {
+
+        var c = localStorage.getItem('diabetes')
+        localStorage.setItem('diabetes', c += dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
+      }
+
+      ml.innerHTML = 'Regular: ' +dose + 'ml';
+
+      montarTabela()
+
+      inputValor.value = ''
+    }
+
+
+
+
+
+    montarTabela()
+    function montarTabela() {
+      if (localStorage.getItem('diabetes')) {
+        var s = '<table><tr><th>Dia</th><th>Hora</th><th>Valor</th><th>Dose</th></tr>'
+
+
+        var tt = localStorage.getItem('diabetes').split('&')
+
+
+        for (let index = 0; index < tt.length; index += 1) {
+
+          if (tt[index].split('|')[0]) {
+            if (tt[index].split('|')[1]) {
+              if (tt[index].split('|')[2]) {
+
+                if (tt[index].split('|')[3]) {
+
+
+                  var dose = parseInt(tt[index].split('|')[2])
+                  var cor = '#ffffff8a';
+                  if(dose <=170){
+                    cor='#18a9188a'
+                  } 
+                  else if(dose >=171 && dose <=250){
+                    cor='#e9db148a'
+                  }
+                  else if(dose >=251){
+                    cor='#ff00008a'
+                  }
+
+
+                  
+                  
+                  s += '<tr>'
+                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[0] + '</td>'
+                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[1] + '</td>'
+                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[2] + '</td>'
+                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[3] + ' ml</td>'
+                  s += '</tr>'
+
+                }
+              }
+            }
+          }
+
+        }
+        s += '</table>'
+
+
+        document.getElementById('tabela').innerHTML = s
+      }
+    }
+
+
+
+    var ct = 0;
+    document.body.addEventListener('click', () => {
+      ct++
+      if (ct == 15) {
+        localStorage.clear()
+        window.location.reload()
+      }
+    })
+
+
+
+  </script>
+
+
+</body>
+
+</html>
