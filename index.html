@@ -5,289 +5,371 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Glico+</title>
-  <style>
-    :root {
-      --bg-color: #333;
-      --primary-color: #3b955d;
-      --danger-color: #e74c3c;
-      --text-color: #2c3e50;
-      --border-color: #666;
-    }
 
+  <style>
+    /* Corpo centralizado perfeitamente */
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #b9e3cc;
+      /* Azul bebê muito suave */
+      color: #2d2d2d;
+
       justify-content: center;
-      align-items: flex-start;
-      padding: 30px;
+      min-height: 100vh;
     }
 
+    /* Container central */
     .container {
-      background: rgb(111, 110, 110);
-      padding: 25px 30px;
+      margin-top: 15px;
+      width: 70%;
+
+      background: #d7d7d7;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 12px;
+      border: 1px solid #78d9a4;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      width: 100%;
-    }
-
-    h2 {
-      margin-top: 0;
-      text-align: center;
-      color: var(--border-color);
-    }
-
-    input {
-      background: #333;
-      color: aliceblue;
-
-      width: calc(100% - 22px);
-      padding: 10px;
       margin-bottom: 15px;
-      border: 1px solid var(--border-color);
-      border-radius: 5px;
+      background: #d4fff0;
       font-size: 16px;
     }
 
-    .button-group {
+    input::placeholder {
+      color: #8ea2b4;
+    }
+
+    .btn-group {
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
-      justify-content: space-between;
+      margin-bottom: 20px;
     }
 
     button {
-      flex: 1 1 calc(33.33% - 10px);
-      padding: 10px;
-      background-color: var(--primary-color);
-      color: white;
+      flex: 1;
+      padding: 4px;
+      background: #78d9a4;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
+      font-size: 16px;
       cursor: pointer;
-      font-size: 14px;
-      transition: background 0.2s ease;
+      color: #0f3e63;
+      transition: 0.2s;
     }
 
     button:hover {
-      background-color: #0f6dad;
+      background: #c7ddf2;
     }
 
-    .danger {
-      background-color: var(--danger-color);
+    p {
+      margin: 10px 0;
+      font-size: 15px;
+      line-height: 1.5;
     }
 
-    .danger:hover {
-      background-color: #c0392b;
+    hr {
+      margin: 15px 0;
+      border: none;
+      border-top: 1px solid #d0dbe6;
     }
 
-    .output {
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 5px;
-      font-size: 14px;
-      white-space: pre-wrap;
-    }
+    /* Tabela ajustada para nunca estourar */
 
     table {
-      border: 1px solid rgb(0, 255, 26);
-      color: rgb(0, 0, 0);
-      width: 75%;
-      text-align: center;
-      background-color: #ffffff;
+
+      border-collapse: collapse;
+      font-size: 14px;
+      width: 100%;
+      
     }
 
-    tr,
-    td,
+    th,
+    td {
+      border-bottom: 1px solid #d0dbe6;
+      max-width: 20px;
+       text-align: center;
+    }
+
     th {
-      padding: 2vw;
-      border: 1px solid rgb(0, 255, 26);
-       
+      background: #f1f7fd;
+      font-weight: bold;
+      color: #2b4f6d;
     }
 
-    #ml {
-      color: aliceblue;
+    details {
+      cursor: pointer;
+      text-align: left;
+      background-color: #78d9a4;
+      border-radius: 5px;
+      padding: 8px;
+      margin-bottom: 5px;
+    }
+
+    summary {
+      color: #000000;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    textarea{
+      resize: none;
+      border: none;
+      border-radius: 5px;
+      width: 90%;
+      padding: 5px;
+      height: 200px;
+      background: #d4fff0;
+      color: #000000;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+  <center>
+    <div class="container">
 
-    <input type="number" id="inputValor" placeholder="Digite o valor da glicose aqui">
+      <center>
+        <input type="text" id="inputValor" placeholder="Digite o valor da glicose aqui...">
 
-    <div class="button-group">
-      <button onclick="calcular()">Calcular ML</button>
-      <button onclick="criar()">Salvar</button>
+        <div class="btn-group">
+          <button onclick="calcular()">Calcular Dose</button>
+          <button onclick="criar()">Salvar</button>
+        </div>
+
+        <p id="ml" style="font-size:23px ;"></p>
+        <hr>
+        <p id="media" style="color:black"></p>
 
 
+      </center>
+      <div class="table-wrapper" id="tabela">
+
+      </div>
+
+
+       
     </div>
-
-    <hr>
-    <h2 id="ml"></h2>
-    <hr>
-
-    <center>
-      <div class="output" id="tabela"></div>
-    </center>
-  </div>
+  </center>
+</body>
+<script>
+  var inputValor = document.getElementById('inputValor')
+  var ml = document.getElementById('ml')
 
 
-
-
-  <script>
-
-    var inputValor = document.getElementById('inputValor')
-    var ml = document.getElementById('ml')
-
-
-    function calcular(){
-      var hora = new Date().getHours()
-      var NPH = 0
-      if(hora >4 && hora <12){
-        NPH=25
-      }
-      else if(hora>17&& hora <=23){
-        NPH=20
-      }
-      
-      ml.innerHTML = 'Regular: ' +calcularML() + 'ml<br>NPH: '+NPH+'ml';
-
+  function calcular() {
+    var hora = new Date().getHours()
+    var NPH = 0
+    if (hora > 4 && hora < 12) {
+      NPH = 25
+    }
+    else if (hora > 17 && hora <= 23) {
+      NPH = 20
     }
 
-    function calcularML() {
-      var b = parseInt(inputValor.value)
-      if (b >= 80 && b <= 130) {
-        return 6;
-      }
-      if (b >= 131 && b <= 170) {
-        return 7;
-      }
-      if (b >= 171 && b <= 210) {
-        return 8;
-      }
-      if (b >= 211 && b <= 250) {
-        return 9;
-      }
-      if (b >= 251 && b <= 290) {
-        return 10;
-      }
-      if (b >= 291 && b <= 320) {
-        return 11;
-      }
-      if (b >= 321) {
-        return 12;
-      }
-      return 0;
+    ml.innerHTML = 'Regular: ' + calcularML() + 'ml<br>NPH: ' + NPH + 'ml';
+
+  }
+
+  function calcularML() {
+    var b = parseInt(inputValor.value)
+    if (b >= 80 && b <= 130) {
+      return 6;
+    }
+    if (b >= 131 && b <= 170) {
+      return 7;
+    }
+    if (b >= 171 && b <= 210) {
+      return 8;
+    }
+    if (b >= 211 && b <= 250) {
+      return 9;
+    }
+    if (b >= 251 && b <= 290) {
+      return 10;
+    }
+    if (b >= 291 && b <= 320) {
+      return 11;
+    }
+    if (b >= 321) {
+      return 12;
+    }
+    return 0;
+  }
+
+  function criar() {
+
+    var dia = new Date().getDate()
+    var mes = new Date().getMonth() + 1
+    var ano = new Date().getFullYear()
+    var hora = new Date().getHours()
+    var minutos = new Date().getMinutes()
+
+    var dose = calcularML();
+
+    console.log(dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
+
+
+    if (!localStorage.getItem('diabetes')) {
+
+      localStorage.setItem('diabetes', dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
+
+
+    } else {
+
+      var c = localStorage.getItem('diabetes')
+      localStorage.setItem('diabetes', c += dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
     }
 
-    function criar() {
+    ml.innerHTML = 'Regular: ' + dose + 'ml';
 
-      var dia = new Date().getDate()
-      var mes = new Date().getMonth() + 1
-      var ano = new Date().getFullYear()
-      var hora = new Date().getHours()
-      var minutos = new Date().getMinutes()
-
-      var dose = calcularML();
-
-      console.log(dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
-
-
-      if (!localStorage.getItem('diabetes')) {
-
-        localStorage.setItem('diabetes', dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
-
-
-      } else {
-
-        var c = localStorage.getItem('diabetes')
-        localStorage.setItem('diabetes', c += dia + '/' + mes + '/' + ano + '|' + hora + ':' + minutos + '|' + inputValor.value + '|' + dose + '&')
-      }
-
-      ml.innerHTML = 'Regular: ' +dose + 'ml';
-
-      montarTabela()
-
-      inputValor.value = ''
-    }
+    window.location.reload()
+  }
 
 
 
 
 
-    montarTabela()
-    function montarTabela() {
-      if (localStorage.getItem('diabetes')) {
-        var s = '<table><tr><th>Dia</th><th>Hora</th><th>Valor</th><th>Dose</th></tr>'
+  montarTabela()
+  function montarTabela() {
+    if (localStorage.getItem('diabetes')) {
 
 
-        var tt = localStorage.getItem('diabetes').split('&')
+
+      var tt = localStorage.getItem('diabetes').split('&')
+
+      var arrayMedia = []//calcular media da glicose
 
 
-        for (let index = 0; index < tt.length; index += 1) {
+      for (let index = 0; index < tt.length; index += 1) {
 
-          if (tt[index].split('|')[0]) {
-            if (tt[index].split('|')[1]) {
-              if (tt[index].split('|')[2]) {
+        if (tt[index].split('|')[0]) {
+          if (tt[index].split('|')[1]) {
+            if (tt[index].split('|')[2]) {
 
-                if (tt[index].split('|')[3]) {
-
-
-                  var dose = parseInt(tt[index].split('|')[2])
-                  var cor = '#ffffff8a';
-                  if(dose <=170){
-                    cor='#18a9188a'
-                  } 
-                  else if(dose >=171 && dose <=250){
-                    cor='#e9db148a'
-                  }
-                  else if(dose >=251){
-                    cor='#ff00008a'
-                  }
+              if (tt[index].split('|')[3]) {
 
 
-                  
-                  
+
+                var dose = parseInt(tt[index].split('|')[2])
+                var cor = '#ffffff8a';
+                if (dose <= 170) {
+                  cor = '#6cb56c7a'//verde
+                }
+                else if (dose >= 171 && dose <= 250) {
+                  cor = '#f8ff728a'//amarelo
+                }
+                else if (dose >= 251) {
+                  cor = '#ff51518a'//vermelho
+                }
+
+
+                if (document.getElementById(tt[index].split('|')[0])) {
+
+                  var s = '<table>'
                   s += '<tr>'
-                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[0] + '</td>'
-                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[1] + '</td>'
-                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[2] + '</td>'
-                  s += '<td style="background-color:'+cor+';">' + tt[index].split('|')[3] + ' ml</td>'
-                  s += '</tr>'
+                  //s += '<td style="background-color:' + cor + ';">' + tt[index].split('|')[0] + '</td>'
+                  s += '<th style="background-color:' + cor + '">' + tt[index].split('|')[1] + '</th>'
+                  s += '<th style="background-color:' + cor + '">' + tt[index].split('|')[2] + '</th>'
+                  s += '<th style="background-color:' + cor + '">' + tt[index].split('|')[3] + ' ml</th>'
+                  s += '</tr></table>'
+                  document.getElementById(tt[index].split('|')[0]).innerHTML += s
+                }
+                else{
+
+                  var s = '<details id="'+tt[index].split('|')[0]+'"><summary>'+tt[index].split('|')[0]+'</summary><table>'
+                 s += '<tr>'
+                 s += '<th>Hora</th>'
+                 s += '<th>Valor</th>'
+                 s += '<th>Dose</th>'
+                 s += '</tr>'
+                 ///s += '<td style="background-color:' + cor + ';">' + tt[index].split('|')[0] + '</td>'
+                  s += '<th style="background-color:' + cor + '">' + tt[index].split('|')[1] + '</th>'
+                  s += '<th style="background-color:' + cor + '">' + tt[index].split('|')[2] + '</th>'
+                  s += '<th style="background-color:' + cor + '">' + tt[index].split('|')[3] + ' ml</th>'
+                  s += '</tr></table></details>'
+                  document.getElementById('tabela').innerHTML += s
 
                 }
+
+                //calcular media da glicose
+                arrayMedia.push(parseInt(tt[index].split('|')[2]))
+
               }
             }
           }
-
         }
-        s += '</table>'
 
-
-        document.getElementById('tabela').innerHTML = s
       }
+      
+
+      //---------------------------
+      var mediaString = ''
+      mediaString = 'Glicose média: ' + media(arrayMedia)
+      document.getElementById('media').innerHTML = mediaString
+      //---------------------------
+
+ 
+    }
+  }
+
+  //----calcular media----------------
+  function media(array) {
+    var a = 0;
+    var ct = 0;
+    array.forEach(b => {
+      a += b
+      ct++
+    });
+    return Math.floor(a / ct)
+  }
+  //----------------------------------
+
+
+
+
+
+  //-----------reset do localStorage 'diabetes'
+  var ct = 0;
+  document.body.addEventListener('click', () => {
+    ct++
+    if (ct == 20) {//reseta tudo
+      ml.innerHTML = 'Resetando...';
+      document.getElementById('tabela').innerHTML = ''
+      document.getElementById('media').innerHTML = 'Aguarde...'
+    }
+    if (ct == 10) {//devmenu
+      //console.log(localStorage.getItem('diabetes'))
+      ml.innerHTML = '';
+      document.getElementById('media').innerHTML = 'localStorage:'
+      var biru =''
+      biru += '<textarea id="textarea">localStorage.setItem("diabetes","'
+      biru += localStorage.getItem('diabetes')
+      biru += '")</textarea><br<br>'
+      biru += '<button id="eval">Executar</button>'
+      document.getElementById('tabela').innerHTML = biru
+      
+      document.getElementById('eval').addEventListener('click',()=>{
+        eval(document.getElementById('textarea').value)
+        window.location.reload()
+      })
     }
 
+    console.log(ct)
+  })
+  setInterval(() => {
+    if (ct >= 15) {
+      localStorage.removeItem('diabetes')
+      window.location.reload()
+    }
+    ct =0
+  }, 10000);
+    //-----------------------------------------
 
-
-    var ct = 0;
-    document.body.addEventListener('click', () => {
-      ct++
-      if (ct == 15) {
-        localStorage.clear()
-        window.location.reload()
-      }
-    })
-
-
-
-  </script>
-
-
-</body>
+</script>
 
 </html>
